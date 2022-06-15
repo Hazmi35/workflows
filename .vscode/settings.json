@@ -1,6 +1,6 @@
 {
     "files.eol": "\n",
     "yaml.schemas": {
-        "https://json.schemastore.org/github-workflow.json": ["workflows/**/*.{yml,yaml}"],
+        "https://json.schemastore.org/github-workflow.json": [".github/workflows/*.{yml,yaml}"]
     }
 }
