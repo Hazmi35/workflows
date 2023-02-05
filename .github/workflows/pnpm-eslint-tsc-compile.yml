@@ -14,7 +14,7 @@ on:
         default: "https://registry.npmjs.com"
         required: false
       runs-on:
-        # https://github.community/t/overwrite-runs-on-defined-in-workflow-call/206374/2
+        # https://github.com/orgs/community/discussions/26801
         description: 'Type of machine of job to run on. Needs to be quoted, because to support self-hosted labels and inputs does not support Array nor multiple types (default: "ubuntu-latest")'
         type: string
         default: '"ubuntu-latest"'
