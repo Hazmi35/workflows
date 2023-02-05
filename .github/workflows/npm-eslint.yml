@@ -1,0 +1,51 @@
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "A Node.js version spec to use and install. Examples: lts/*, 14.x, 16"
+        type: string
+        required: false
+      node-version-file:
+        description: "A path to file containing Node.js version spec. Examples: .node-version .nvmrc"
+        type: string
+        required: false
+      registry-url:
+        type: string
+        default: "https://registry.npmjs.com"
+        required: false
+      runs-on:
+        # https://github.community/t/overwrite-runs-on-defined-in-workflow-call/206374/2
+        description: 'Type of machine of job to run on. Needs to be quoted, because to support self-hosted labels and inputs does not support Array nor multiple types (default: "ubuntu-latest")'
+        type: string
+        default: '"ubuntu-latest"'
+        required: false
+
+# outputs: - no output available
+
+jobs:
+  lint:
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js ${{ inputs.node-version }}
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        with:
+          node-version: ${{ inputs.node-version }}
+          node-version-file: ${{ inputs.node-version-file }}
+          registry-url: ${{ inputs.registry-url }}
+          cache: 'npm'
+          check-latest: true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run compose script if exists
+        run: npm run --if-present compose
+
+      - name: Lint code
+        run: npm run lint
