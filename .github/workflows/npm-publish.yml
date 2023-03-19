@@ -9,10 +9,6 @@ on:
         description: "A path to file containing Node.js version spec. Examples: .node-version .nvmrc"
         type: string
         required: false
-      registry-url:
-        type: string
-        default: "https://registry.npmjs.com"
-        required: false
       runs-on:
         # https://github.com/orgs/community/discussions/26801
         description: 'Type of machine of job to run on. Needs to be quoted, because to support self-hosted labels and inputs does not support Array nor multiple types (default: "ubuntu-latest")'
@@ -24,6 +20,14 @@ on:
 
 jobs:
   publish:
+    strategy:
+      matrix:
+        include:
+          - registry-url: https://registry.npmjs.org/
+            token_secret_key: NPM_TOKEN
+          - registry-url: https://npm.pkg.github.com/
+            token_secret_key: GITHUB_TOKEN
+
     runs-on: ${{ fromJSON(inputs.runs-on) }}
 
     steps:
@@ -35,7 +39,7 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           node-version-file: ${{ inputs.node-version-file }}
-          registry-url: ${{ inputs.registry-url }}
+          registry-url: ${{ matrix.registry-url }}
           cache: 'npm'
           check-latest: true
 
@@ -47,3 +51,5 @@ jobs:
 
       - name: Publish/release package to npm and GitHub packages registry
         run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.token_secret_key] }}
