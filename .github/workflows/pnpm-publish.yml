@@ -45,7 +45,7 @@ jobs:
           check-latest: true
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run compose script if exists
         run: pnpm run --if-present compose
