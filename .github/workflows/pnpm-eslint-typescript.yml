@@ -1,0 +1,43 @@
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: "A Node.js version spec to use and install. Examples: lts/*, 14.x, 16"
+        type: string
+        required: false
+      node-version-file:
+        description: "A path to file containing Node.js version spec. Examples: .node-version .nvmrc"
+        type: string
+        required: false
+      registry-url:
+        type: string
+        default: "https://registry.npmjs.com"
+        required: false
+      runs-on:
+        # https://github.com/orgs/community/discussions/26801
+        description: 'Type of machine of job to run on. Needs to be quoted, because to support self-hosted labels and inputs does not support Array nor multiple types (default: "ubuntu-latest")'
+        type: string
+        default: '"ubuntu-latest"'
+        required: false
+
+# outputs: - no output available
+
+jobs:
+  lint:
+    uses: Hazmi35/workflows/.github/workflows/pnpm-eslint.yml@master
+    with:
+      runs-on: ${{ inputs.runs-on }}
+      node-version: ${{ inputs.node-version }}
+      node-version-file: ${{ inputs.node-version-file }}
+      registry-url: ${{ inputs.registry-url }}
+    secrets: inherit
+
+  compile:
+    needs: lint
+    uses: Hazmi35/workflows/.github/workflows/pnpm-typescript-compile.yml@master
+    with:
+      runs-on: ${{ inputs.runs-on }}
+      node-version: ${{ inputs.node-version }}
+      node-version-file: ${{ inputs.node-version-file }}
+      registry-url: ${{ inputs.registry-url }}
+    secrets: inherit

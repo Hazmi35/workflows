@@ -24,22 +24,18 @@ on:
 
 jobs:
   lint:
-    uses: Hazmi35/workflows/.github/workflows/pnpm-eslint.yml@master
-    with:
-      runs-on: ${{ inputs.runs-on }}
-      node-version: ${{ inputs.node-version }}
-      node-version-file: ${{ inputs.node-version-file }}
-      registry-url: ${{ inputs.registry-url }}
-    secrets: inherit
-
-  compile:
-    needs: lint
     runs-on: ${{ fromJSON(inputs.runs-on) }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
         with:
           fetch-depth: 2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # v2.2.4
+        with:
+          version: latest
 
       - name: Setup Node.js ${{ inputs.node-version }}
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
@@ -56,5 +52,5 @@ jobs:
       - name: Run compose script if exists
         run: pnpm run --if-present compose
 
-      - name: Test compile
-        run: pnpm run compile && rm -rf dist
+      - name: Compile code
+        run: pnpm run compile
