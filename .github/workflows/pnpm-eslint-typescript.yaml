@@ -24,7 +24,7 @@ on:
 
 jobs:
   lint:
-    uses: Hazmi35/workflows/.github/workflows/npm-eslint.yml@master
+    uses: Hazmi35/workflows/.github/workflows/pnpm-eslint.yaml@master
     with:
       runs-on: ${{ inputs.runs-on }}
       node-version: ${{ inputs.node-version }}
@@ -34,7 +34,7 @@ jobs:
 
   compile:
     needs: lint
-    uses: Hazmi35/workflows/.github/workflows/npm-typescript-compile.yml@master
+    uses: Hazmi35/workflows/.github/workflows/pnpm-typescript-compile.yaml@master
     with:
       runs-on: ${{ inputs.runs-on }}
       node-version: ${{ inputs.node-version }}
