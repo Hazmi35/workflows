@@ -38,7 +38,7 @@ jobs:
         uses: pnpm/action-setup@v4.0.0
 
       - name: Setup Node.js ${{ inputs.node-version }}
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4.2.0
         with:
           node-version: ${{ inputs.node-version }}
           node-version-file: ${{ inputs.node-version-file }}
