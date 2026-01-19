@@ -1,12 +1,12 @@
 on:
   workflow_call:
     inputs:
-      node-version:
-        description: "A Node.js version spec to use and install. Examples: lts/*, 14.x, 16"
+      bun-version:
+        description: "A Bun version spec to use and install. Examples: 1.2.3, ^1.2.0, latest, stable, lts"
         type: string
         required: false
-      node-version-file:
-        description: "A path to file containing Node.js version spec. Examples: .node-version .nvmrc"
+      bun-version-file:
+        description: "A path to file containing Bun version spec. Examples: .bun-version .bvmrc"
         type: string
         required: false
       runs-on:
@@ -15,10 +15,6 @@ on:
         type: string
         default: '"ubuntu-latest"'
         required: false
-      registry-url:
-        description: "The registry URL to publish to. Examples: https://registry.npmjs.org/ https://npm.pkg.github.com/"
-        type: string
-        required: true
     secrets:
       NODE_AUTH_TOKEN:
         description: "The token to use for authentication with the registry."
@@ -36,14 +32,9 @@ jobs:
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2.1.2
-
-      - name: Setup Node.js ${{ inputs.node-version }}
-        uses: actions/setup-node@v6.2.0
         with:
-          node-version: ${{ inputs.node-version }}
-          node-version-file: ${{ inputs.node-version-file }}
-          registry-url: ${{ inputs.registry-url }}
-          check-latest: true
+          bun-version: ${{ inputs.bun-version }}
+          bun-version-file: ${{ inputs.bun-version-file }}
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
