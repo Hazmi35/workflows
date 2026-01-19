@@ -57,4 +57,4 @@ jobs:
       - name: Publish/release package to npm and GitHub packages registry
         run: bun run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
