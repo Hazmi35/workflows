@@ -1,4 +1,10 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["github>kakushindev/renovate-config"]
+    "extends": ["github>kakushindev/renovate-config"],
+    "packageRules": [
+        {
+            "matchPackageNames": ["Hazmi35/workflows"],
+            "enabled": false
+        }
+    ]
 }
